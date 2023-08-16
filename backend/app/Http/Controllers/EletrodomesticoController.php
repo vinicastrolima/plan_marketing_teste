@@ -46,7 +46,7 @@ class EletrodomesticoController extends Controller
                 'nome' => 'required|string|max:200',
                 'descricao' => 'required|string|max:200',
                 'tensao' => 'required|in:110V,220V,100V,127V,230V,240V,208V,480V',
-                'marca' => 'required|string|max:200',
+                'marca' => 'required|string|max:50',
             ]);
     
             Eletrodomestico::create($validatedData);
@@ -95,7 +95,7 @@ class EletrodomesticoController extends Controller
                 'nome' => 'required|string|max:200',
                 'descricao' => 'required|string|max:200',
                 'tensao' => 'required|in:110V,220V,100V,127V,230V,240V,208V,480V',
-                'marca' => 'required|string|max:200',
+                'marca' => 'required|string|max:50',
             ]);
     
             $eletrodomestico = Eletrodomestico::findOrFail($id);

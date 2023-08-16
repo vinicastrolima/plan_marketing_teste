@@ -18,7 +18,7 @@ class CreateEletrodomesticosTable extends Migration
             $table->string('nome', 200);
             $table->string('descricao', 200);
             $table->enum('tensao', ['110V', '220V', '100V', '127V', '230V', '240V', '208V', '480V']);
-            $table->string('marca', 200);
+            $table->string('marca', 50);
             $table->timestamps();
         });
     }

@@ -44,7 +44,9 @@
 import ModalCriar from '@/components/ModalCriar.vue';
 import ModalEditar from '@/components/ModalEditar.vue';
 import ModalExcluir from '@/components/ModalExcluir.vue';
+import { APP_URL } from '@/config';
 import axios from 'axios';
+
 
 export default {
   components: {
@@ -66,7 +68,7 @@ export default {
   methods: {
     async fetchItems() {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/eletrodomesticos');
+        const response = await axios.get(`${APP_URL}/eletrodomesticos`);
         this.items = response.data;
       } catch (error) {
         console.error('Erro ao buscar itens:', error);

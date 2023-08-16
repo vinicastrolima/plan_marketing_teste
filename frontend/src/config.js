@@ -1,0 +1,1 @@
+export const APP_URL = 'http://127.0.0.1:8000/api'; // Altere aqui para sua URL Local, baseado na porta que está usando

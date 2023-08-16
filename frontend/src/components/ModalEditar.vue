@@ -9,15 +9,18 @@
         <form>
           <div class="custom-form-group">
             <label for="editNome">Nome</label>
-            <input type="text" id="editNome" v-model="editedItem.nome" class="custom-form-control">
+            <input type="text" id="editNome" v-model="editedItem.nome" class="custom-form-control" :class="{ 'is-invalid': errors.nome }">
+            <div class="invalid-feedback">{{ errors.nome }}</div>
           </div>
           <div class="custom-form-group">
             <label for="editDescricao">Descrição</label>
-            <input type="text" id="editDescricao" v-model="editedItem.descricao" class="custom-form-control">
+            <input type="text" id="editDescricao" v-model="editedItem.descricao" class="custom-form-control" :class="{ 'is-invalid': errors.descricao }">
+            <div class="invalid-feedback">{{ errors.descricao }}</div>
           </div>
           <div class="custom-form-group">
             <label for="editMarca">Marca</label>
-            <input type="text" id="editMarca" v-model="editedItem.marca" class="custom-form-control">
+            <input type="text" id="editMarca" v-model="editedItem.marca" class="custom-form-control" :class="{ 'is-invalid': errors.marca }">
+            <div class="invalid-feedback">{{ errors.marca }}</div>
           </div>
           <div class="custom-form-group">
             <label for="editTensao">Tensão</label>
@@ -35,8 +38,10 @@
   </div>
 </template>
 
+
 <script>
 import axios from 'axios';
+import { APP_URL } from '@/config';
 
 export default {
   props: {
@@ -51,12 +56,16 @@ export default {
         tensao: '',
       },
       tensaoOptions: ['100V','110V','127V', '208V','220V', '230V', '240V', '480V'],
+      errors: {
+        nome: '',
+        descricao: '',
+        marca: '',
+      },
     };
   },
   watch: {
     itemToEdit: {
       handler(newItem) {
-        // Preencher campos do modal com valores do item a ser editado
         this.editedItem.nome = newItem.nome;
         this.editedItem.descricao = newItem.descricao;
         this.editedItem.marca = newItem.marca;
@@ -69,28 +78,39 @@ export default {
     closeModal() {
       this.$emit('close');
     },
+    validateFields() {
+      this.errors = {
+        nome: this.isFieldEmptyOrWhiteSpace(this.editedItem.nome) ? 'Campo obrigatório' : (this.editedItem.nome.trim().length > 200 ? 'Nome não pode ter mais de 200 caracteres' : ''),
+        descricao: this.isFieldEmptyOrWhiteSpace(this.editedItem.descricao) ? 'Campo obrigatório' : (this.editedItem.descricao.trim().length > 200 ? 'Descrição não pode ter mais de 200 caracteres' : ''),
+        marca: this.isFieldEmptyOrWhiteSpace(this.editedItem.marca) ? 'Campo obrigatório' : (this.editedItem.marca.trim().length > 50 ? 'Marca não pode ter mais de 50 caracteres' : ''),
+      };
+
+      return Object.values(this.errors).every(error => error === '');
+    },
+    isFieldEmptyOrWhiteSpace(value) {
+      return value.trim().length === 0 || value.trim() === '';
+    },
     async saveItem() {
-      try {
-        const response = await axios.put(`http://127.0.0.1:8000/api/eletrodomesticos/${this.itemToEdit.id}`, {
-          nome: this.editedItem.nome,
-          descricao: this.editedItem.descricao,
-          marca: this.editedItem.marca,
-          tensao: this.editedItem.tensao,
-        });
+      if (this.validateFields()) {
+        try {
+          const response = await axios.put(`${APP_URL}/eletrodomesticos/${this.itemToEdit.id}`, {
+            nome: this.editedItem.nome,
+            descricao: this.editedItem.descricao,
+            marca: this.editedItem.marca,
+            tensao: this.editedItem.tensao,
+          });
 
-        // Atualizar a lista de itens na página principal
-        this.$emit('item-editado', response.data);
+          this.$emit('item-editado', response.data);
 
-        // Fechar o modal de edição
-        this.closeModal();
-      } catch (error) {
-        console.error('Erro ao editar o item:', error);
+          this.closeModal();
+        } catch (error) {
+          console.error('Erro ao editar o item:', error);
+        }
       }
-    }
+    },
   },
 };
 </script>
-
 
 <style scoped>
 /* Estilize o modal personalizado aqui */

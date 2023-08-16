@@ -9,7 +9,6 @@
           <p>Tem certeza de que deseja excluir o item?</p>
           <p><strong>Nome:</strong> {{ itemToExcluir.nome }}</p>
           <p><strong>Descrição:</strong> {{ itemToExcluir.descricao }}</p>
-          <!-- Adicione mais campos estáticos conforme necessário -->
         </div>
         <div class="custom-modal-footer">
           <button class="custom-btn custom-btn-secondary" @click="closeModal">Cancelar</button>
@@ -21,6 +20,7 @@
   
   <script>
   import axios from 'axios';
+  import { APP_URL } from '@/config';
   
   export default {
     props: {
@@ -32,7 +32,7 @@
       },
       async excluirItem() {
         try {
-          await axios.delete(`http://127.0.0.1:8000/api/eletrodomesticos/${this.itemToExcluir.id}`);
+          await axios.delete(`${APP_URL}/eletrodomesticos/${this.itemToExcluir.id}`);
           this.$emit('item-excluido', this.itemToExcluir.id);
           this.closeModal();
         } catch (error) {
@@ -45,7 +45,6 @@
   </script>
   
   <style scoped>
-  /* Estilize o modal personalizado aqui */
   .custom-modal {
     position: fixed;
     top: 0;

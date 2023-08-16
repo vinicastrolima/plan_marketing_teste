@@ -33,15 +33,23 @@
         </div>
       </div>
     </div>
+    <ModalCriar v-if="showModal" @close="closeModal" />
   </div>
 </template>
 
 <script>
+import ModalCriar from '@/components/ModalCriar.vue';
+// import ModalEditar from '@/components/ModalEditar.vue';
 import axios from 'axios';
 
 export default {
+  components: {
+    ModalCriar,
+    // ModalEditar,
+  },
   data() {
     return {
+      showModal: false,
       items: [],
     };
   },
@@ -55,6 +63,7 @@ export default {
       }
     },
     addItem() {
+      this.openModal();
       // Implemente a lógica para adicionar um novo item
     },
     editItem() {
@@ -62,6 +71,12 @@ export default {
     },
     deleteItem() {
       // Implemente a lógica para excluir um item
+    },
+    openModal() {
+      this.showModal = true;
+    },
+    closeModal() {
+      this.showModal = false;
     },
   },
   mounted() {

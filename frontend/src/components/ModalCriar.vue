@@ -44,7 +44,7 @@
         nome: '',
         descricao: '',
         marca: '',
-        tensaoOptions: ['110V', '220V', '100V', '127V', '230V', '240V', '208V', '480V'],
+        tensaoOptions: ['100V','110V','127V', '208V','220V', '230V', '240V', '480V'],
         tensao: '',
       };
     },

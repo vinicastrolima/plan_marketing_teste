@@ -24,7 +24,7 @@
                 <td>{{ item.tensao }}</td>
                 <td>{{ item.marca }}</td>
                 <td>
-                  <button class="btn btn-primary me-2" @click="editItem(item.id)">Editar</button>
+                  <button class="btn btn-primary me-2" @click="editItem(item)">Editar</button>
                   <button class="btn btn-danger" @click="deleteItem(item.id)">Excluir</button>
                 </td>
               </tr>
@@ -34,22 +34,25 @@
       </div>
     </div>
     <ModalCriar v-if="showModal" @close="closeModal" />
+    <ModalEditar v-if="showEditModal" :itemToEdit="selectedItem" @close="closeEditModal" />
   </div>
 </template>
 
 <script>
 import ModalCriar from '@/components/ModalCriar.vue';
-// import ModalEditar from '@/components/ModalEditar.vue';
+import ModalEditar from '@/components/ModalEditar.vue';
 import axios from 'axios';
 
 export default {
   components: {
     ModalCriar,
-    // ModalEditar,
+    ModalEditar,
   },
   data() {
     return {
       showModal: false,
+      showEditModal: false,
+      selectedItem: null,
       items: [],
     };
   },
@@ -66,8 +69,13 @@ export default {
       this.openModal();
       // Implemente a lógica para adicionar um novo item
     },
-    editItem() {
-      // Implemente a lógica para editar um item
+    editItem(item) {
+      this.selectedItem = item;
+      this.showEditModal = true;
+    },
+    closeEditModal() {
+      this.showEditModal = false;
+      this.selectedItem = null;
     },
     deleteItem() {
       // Implemente a lógica para excluir um item

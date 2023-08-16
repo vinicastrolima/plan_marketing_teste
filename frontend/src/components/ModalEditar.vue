@@ -79,14 +79,14 @@ export default {
         });
 
         // Atualizar a lista de itens na página principal
-        this.$emit('item-edited', response.data);
+        this.$emit('item-editado', response.data);
 
         // Fechar o modal de edição
         this.closeModal();
       } catch (error) {
         console.error('Erro ao editar o item:', error);
       }
-    },
+    }
   },
 };
 </script>
